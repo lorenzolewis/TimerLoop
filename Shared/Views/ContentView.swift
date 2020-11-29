@@ -10,35 +10,48 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-
+    
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \CoreDataLoop.id, ascending: true)],
         animation: .default)
-    private var items: FetchedResults<Item>
-
+    private var loops: FetchedResults<CoreDataLoop>
+    
+    @State private var selectedLoop: LoopViewModel?
+    
     var body: some View {
-        List {
-            ForEach(items) { item in
-                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+            List {
+                ForEach(loops) { loop in
+                    Button(action: {
+                        selectedLoop = LoopViewModel(loop)
+                    }) {
+                        Text("Item at \(loop.id!)")
+                    }
+                }
+                .onDelete(perform: deleteItems)
             }
-            .onDelete(perform: deleteItems)
-        }
-        .toolbar {
-            #if os(iOS)
-            EditButton()
-            #endif
-
-            Button(action: addItem) {
-                Label("Add Item", systemImage: "plus")
+            .sheet(item: $selectedLoop) { loop in
+                EditLoopView(loop: loop)
             }
-        }
+            .toolbar {
+                ToolbarItem(placement: .automatic) {
+                    HStack {
+                        Button(action: addItem) {
+                            Label("Add Item", systemImage: "plus")
+                        }
+                        #if os(iOS)
+                        EditButton()
+                        #endif
+                        
+                    }
+                }
+            }
     }
-
+    
     private func addItem() {
         withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
+            let newItem = CoreDataLoop(context: viewContext)
+            newItem.id = UUID()
+            
             do {
                 try viewContext.save()
             } catch {
@@ -49,11 +62,11 @@ struct ContentView: View {
             }
         }
     }
-
+    
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
+            offsets.map { loops[$0] }.forEach(viewContext.delete)
+            
             do {
                 try viewContext.save()
             } catch {
@@ -65,13 +78,6 @@ struct ContentView: View {
         }
     }
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
