@@ -19,12 +19,13 @@ struct ContentView: View {
     @State private var selectedLoop: LoopViewModel?
     
     var body: some View {
+        NavigationView {
             List {
                 ForEach(loops) { loop in
                     Button(action: {
                         selectedLoop = LoopViewModel(loop)
                     }) {
-                        Text("Item at \(loop.id!)")
+                        LoopListCellView(loop: LoopViewModel(loop))
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -32,19 +33,15 @@ struct ContentView: View {
             .sheet(item: $selectedLoop) { loop in
                 EditLoopView(loop: loop)
             }
+            .navigationTitle("TimerLoop")
             .toolbar {
                 ToolbarItem(placement: .automatic) {
-                    HStack {
-                        Button(action: addItem) {
-                            Label("Add Item", systemImage: "plus")
-                        }
-                        #if os(iOS)
-                        EditButton()
-                        #endif
-                        
+                    Button(action: addItem) {
+                        Label("Add Loop", systemImage: "plus")
                     }
                 }
             }
+        }
     }
     
     private func addItem() {

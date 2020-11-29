@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5A1C31B425733D7C00B7272C /* LoopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1C31B325733D7C00B7272C /* LoopViewModel.swift */; };
 		5A1C31B525733D7C00B7272C /* LoopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1C31B325733D7C00B7272C /* LoopViewModel.swift */; };
+		5A2F9DAB257446D500ABA89A /* LoopListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2F9DAA257446D500ABA89A /* LoopListCellView.swift */; };
+		5A2F9DAC257446D500ABA89A /* LoopListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2F9DAA257446D500ABA89A /* LoopListCellView.swift */; };
 		5A8778ED2573FB1900BA227A /* EditLoopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8778EC2573FB1900BA227A /* EditLoopView.swift */; };
 		5A8778EE2573FB1900BA227A /* EditLoopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8778EC2573FB1900BA227A /* EditLoopView.swift */; };
 		5AB3650825732F5400AE5B4C /* TimerLoop.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5AB364F225732F5400AE5B4C /* TimerLoop.xcdatamodeld */; };
@@ -25,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		5A1C31B325733D7C00B7272C /* LoopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopViewModel.swift; sourceTree = "<group>"; };
+		5A2F9DAA257446D500ABA89A /* LoopListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopListCellView.swift; sourceTree = "<group>"; };
 		5A8778EC2573FB1900BA227A /* EditLoopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLoopView.swift; sourceTree = "<group>"; };
 		5AB364F325732F5400AE5B4C /* Shared.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Shared.xcdatamodel; sourceTree = "<group>"; };
 		5AB364F425732F5400AE5B4C /* TimerLoopApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerLoopApp.swift; sourceTree = "<group>"; };
@@ -85,6 +88,7 @@
 			children = (
 				5AB364F525732F5400AE5B4C /* ContentView.swift */,
 				5A8778EC2573FB1900BA227A /* EditLoopView.swift */,
+				5A2F9DAA257446D500ABA89A /* LoopListCellView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -240,6 +244,7 @@
 				5A1C31B425733D7C00B7272C /* LoopViewModel.swift in Sources */,
 				5AB3650A25732F5400AE5B4C /* TimerLoopApp.swift in Sources */,
 				5A8778ED2573FB1900BA227A /* EditLoopView.swift in Sources */,
+				5A2F9DAB257446D500ABA89A /* LoopListCellView.swift in Sources */,
 				5AB3650C25732F5400AE5B4C /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,6 +258,7 @@
 				5A1C31B525733D7C00B7272C /* LoopViewModel.swift in Sources */,
 				5AB3650B25732F5400AE5B4C /* TimerLoopApp.swift in Sources */,
 				5A8778EE2573FB1900BA227A /* EditLoopView.swift in Sources */,
+				5A2F9DAC257446D500ABA89A /* LoopListCellView.swift in Sources */,
 				5AB3650D25732F5400AE5B4C /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

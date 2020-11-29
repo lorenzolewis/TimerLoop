@@ -7,8 +7,12 @@
 
 import Foundation
 import Combine
+import CoreData
 
 class LoopViewModel: Identifiable, ObservableObject {
+    private var coreDataLoop: CoreDataLoop?
+    private var context: NSManagedObjectContext
+    
     var id: UUID
     var name: String
     var isEnabled: Bool
@@ -21,11 +25,43 @@ class LoopViewModel: Identifiable, ObservableObject {
         return LoopViewModel(coreDataLoop)
     }
     
+    /// Instantiate a LoopViewModel using an existing CoreDataLoop
+    /// - Parameter coreDataLoop: Existing CoreDataLoop
     init(_ coreDataLoop: CoreDataLoop) {
         id = coreDataLoop.id ?? UUID()
         name = coreDataLoop.name ?? ""
         isEnabled = coreDataLoop.isEnabled
         interval = coreDataLoop.interval
+        
+        self.coreDataLoop = coreDataLoop
+        context = coreDataLoop.managedObjectContext!
+    }
+    
+    /// Instantiate for a draft LoopViewModel
+    /// - Parameter context: Context that the CoreDataLoop should be saved to
+    init(context: NSManagedObjectContext) {
+        id = UUID()
+        name = ""
+        isEnabled = true
+        interval = 1.0
+        
+        self.context = context
+    }
+    
+    // MARK: Functions
+    
+    func save() {
+        // Check to see if working with a commited loop or draft loop
+        if coreDataLoop == nil {
+            coreDataLoop = CoreDataLoop(context: context)
+        }
+        
+        coreDataLoop?.id = id
+        coreDataLoop?.name = name
+        coreDataLoop?.isEnabled = isEnabled
+        coreDataLoop?.interval = interval
+        
+        try? context.save()
     }
     
     // MARK: Calculated Values
@@ -40,5 +76,9 @@ class LoopViewModel: Identifiable, ObservableObject {
         else {
             return "Error"
         }
+    }
+    
+    var displayName: String {
+        return name != "" ? name : "Loop"
     }
 }
