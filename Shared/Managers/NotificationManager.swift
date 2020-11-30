@@ -7,7 +7,7 @@
 
 // https://stackoverflow.com/questions/30852870/displaying-a-stock-ios-notification-banner-when-your-app-is-open-and-in-the-fore/40756060#40756060
 
-import Foundation
+import SwiftUI
 import UserNotifications
 import CoreData
 
@@ -17,10 +17,10 @@ struct NotificationManager {
     
     private struct NotificationData {
         let title: String
-        var components: DateComponents
+        var date: Date
         let threadIdentifier: String
     }
-    
+        
     func refreshNotifications() {
         guard let loops = fetchCoreDataLoops() else { return }
         let notifications = createNotificationData(from: loops)
@@ -37,7 +37,7 @@ struct NotificationManager {
                       var endTime = loop.endTime else { continue }
                 
                 // Set times to current date
-                var startTimeComponents = Calendar.current.dateComponents([.hour, .minute], from: startTime)
+                let startTimeComponents = Calendar.current.dateComponents([.hour, .minute], from: startTime)
                 startTime = Calendar.current.date(byAdding: startTimeComponents, to: Date())!
                 
                 let endTimeComponenets = Calendar.current.dateComponents([.hour, .minute], from: endTime)
@@ -51,13 +51,12 @@ struct NotificationManager {
                 // Create notification to work with
                 var notification = NotificationData(
                     title: loop.name ?? "Your timer has looped!",
-                    components: startTimeComponents,
+                    date: startTime,
                     threadIdentifier: loop.id!.uuidString
                 )
                 
                 while startTime < endTime {
-                    startTimeComponents = Calendar.current.dateComponents([.hour, .minute], from: startTime)
-                    notification.components = startTimeComponents
+                    notification.date = startTime
                     notifications.append(notification)
                     
                     // Add the interval to the start time
@@ -95,7 +94,8 @@ struct NotificationManager {
             content.title = notification.title
             content.threadIdentifier = notification.threadIdentifier
             
-            let trigger = UNCalendarNotificationTrigger(dateMatching: notification.components, repeats: false)
+            let date = Calendar.current.dateComponents([.hour, .minute], from: notification.date)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: false)
             
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
             
@@ -109,6 +109,21 @@ struct NotificationManager {
     
     private func scheduleAlerts(with notifications: [NotificationData]) {
         
+        // Filter out any dates that have passed
+        var notifications = notifications.filter { $0.date > Date() }
+        
+        // Sort by dates, getting next one that will occur
+        notifications.sort { $0.date > $1.date }
+        
+        guard let nextNotification = notifications.first else { return }
+        
+        let timer = Timer(fire: nextNotification.date, interval: 0, repeats: false) { _ in
+            let alert = Alert(title: Text(nextNotification.title), message: nil, dismissButton: .default(Text("Dismiss")))
+            AlertManager.shared.enqueue(alert)
+            
+            refreshNotifications()
+        }
+        RunLoop.current.add(timer, forMode: .common)
     }
     
     private func fetchCoreDataLoops() -> [CoreDataLoop]? {

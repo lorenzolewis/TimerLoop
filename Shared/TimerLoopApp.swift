@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct TimerLoopApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     let persistenceController = PersistenceManager.shared
     @ObservedObject private var alertManager = AlertManager.shared
     
