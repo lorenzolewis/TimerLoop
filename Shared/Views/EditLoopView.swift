@@ -18,6 +18,8 @@ struct EditLoopView: View {
                 TextField("Loop name", text: $loop.name)
                 Toggle("Enable", isOn: $loop.isEnabled)
                 Stepper(loop.intervalString, value: $loop.interval, in: 0.25...12, step: 0.25)
+                DatePicker("Start Time", selection: $loop.startTime, displayedComponents: .hourAndMinute)
+                DatePicker("End Time", selection: $loop.endTime, displayedComponents: .hourAndMinute)
             }
             .navigationTitle(loop.displayName)
             .navigationBarTitleDisplayMode(.inline)

@@ -81,8 +81,8 @@
 		5A45C64C257403C60015F343 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				5AB364F625732F5400AE5B4C /* PersistenceManager.swift */,
 				5A2D8F21257495CD004E857E /* NotificationManager.swift */,
+				5AB364F625732F5400AE5B4C /* PersistenceManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";

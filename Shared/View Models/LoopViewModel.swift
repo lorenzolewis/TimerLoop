@@ -14,13 +14,19 @@ class LoopViewModel: Identifiable, ObservableObject {
     private var context: NSManagedObjectContext
     
     let id: UUID
-    var name: String {
+    @Published var name: String {
         didSet { unsavedChanges = true }
     }
-    var isEnabled: Bool {
+    @Published var isEnabled: Bool {
         didSet { unsavedChanges = true }
     }
     @Published var interval: Double {
+        didSet { unsavedChanges = true }
+    }
+    @Published var startTime: Date {
+        didSet { unsavedChanges = true }
+    }
+    @Published var endTime: Date {
         didSet { unsavedChanges = true }
     }
     
@@ -40,6 +46,8 @@ class LoopViewModel: Identifiable, ObservableObject {
         name = coreDataLoop.name ?? ""
         isEnabled = coreDataLoop.isEnabled
         interval = coreDataLoop.interval
+        startTime = coreDataLoop.startTime ?? Date()
+        endTime = coreDataLoop.endTime ?? Date().addingTimeInterval(60 * 60) // Adds 1 hour
         
         self.coreDataLoop = coreDataLoop
         context = coreDataLoop.managedObjectContext!
@@ -52,6 +60,8 @@ class LoopViewModel: Identifiable, ObservableObject {
         name = ""
         isEnabled = true
         interval = 1.0
+        startTime = Date()
+        endTime = Date()
         
         unsavedChanges = true
         
@@ -70,8 +80,11 @@ class LoopViewModel: Identifiable, ObservableObject {
         coreDataLoop?.name = name
         coreDataLoop?.isEnabled = isEnabled
         coreDataLoop?.interval = interval
+        coreDataLoop?.startTime = startTime
+        coreDataLoop?.endTime = endTime
         
         try? context.save()
+        NotificationManager.shared.refreshNotifications()
     }
     
     // MARK: Calculated Values

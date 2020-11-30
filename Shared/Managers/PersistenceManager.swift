@@ -30,7 +30,7 @@ struct PersistenceManager {
 
     let container: NSPersistentCloudKitContainer
 
-    init(inMemory: Bool = false) {
+    private init(inMemory: Bool = false) {
         container = NSPersistentCloudKitContainer(name: "TimerLoop")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
