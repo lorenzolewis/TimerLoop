@@ -24,7 +24,7 @@ struct NotificationManager {
     func refreshNotifications() {
         guard let loops = fetchCoreDataLoops() else { return }
         let notifications = createNotificationData(from: loops)
-        checkNotificationAuthorization(with: notifications)
+        schedule(with: notifications)
     }
     
     private func createNotificationData(from loops: [CoreDataLoop]) -> [NotificationData] {
@@ -69,7 +69,7 @@ struct NotificationManager {
         return notifications
     }
     
-    private func checkNotificationAuthorization(with notifications: [NotificationData]) {
+    private func schedule(with notifications: [NotificationData]) {
         center.getNotificationSettings { settings in
             switch settings.authorizationStatus {
             case .notDetermined:
