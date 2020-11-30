@@ -10,10 +10,12 @@ import SwiftUI
 @main
 struct TimerLoopApp: App {
     let persistenceController = PersistenceManager.shared
-
+    @ObservedObject private var alertManager = AlertManager.shared
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .alert(isPresented: $alertManager.isPresented) { alertManager.dequeue() }
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
