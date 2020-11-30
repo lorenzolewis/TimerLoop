@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		5A2D8F23257495CD004E857E /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2D8F21257495CD004E857E /* NotificationManager.swift */; };
 		5A2F9DAB257446D500ABA89A /* LoopListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2F9DAA257446D500ABA89A /* LoopListCellView.swift */; };
 		5A2F9DAC257446D500ABA89A /* LoopListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2F9DAA257446D500ABA89A /* LoopListCellView.swift */; };
+		5A4B5C342575A49F00F165BD /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = 5A4B5C332575A49F00F165BD /* SwiftyBeaver */; };
 		5A8778ED2573FB1900BA227A /* EditLoopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8778EC2573FB1900BA227A /* EditLoopView.swift */; };
 		5A8778EE2573FB1900BA227A /* EditLoopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8778EC2573FB1900BA227A /* EditLoopView.swift */; };
 		5AA43D732575555D0037BAD4 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA43D722575555D0037BAD4 /* AlertManager.swift */; };
@@ -29,6 +30,7 @@
 		5AB3650F25732F5400AE5B4C /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB364F625732F5400AE5B4C /* PersistenceManager.swift */; };
 		5AB3651025732F5400AE5B4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AB364F725732F5400AE5B4C /* Assets.xcassets */; };
 		5AB3651125732F5400AE5B4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AB364F725732F5400AE5B4C /* Assets.xcassets */; };
+		5AB7DF882575A445003041E5 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = 5AB7DF872575A445003041E5 /* SwiftyBeaver */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AB7DF882575A445003041E5 /* SwiftyBeaver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A4B5C342575A49F00F165BD /* SwiftyBeaver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +98,13 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		5A4B5C322575A49F00F165BD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5A8778EB2573FAE300BA227A /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +122,7 @@
 				5AB364FE25732F5400AE5B4C /* iOS */,
 				5AB3650525732F5400AE5B4C /* macOS */,
 				5AB364FD25732F5400AE5B4C /* Products */,
+				5A4B5C322575A49F00F165BD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -170,6 +182,9 @@
 			dependencies = (
 			);
 			name = "TimerLoop (iOS)";
+			packageProductDependencies = (
+				5AB7DF872575A445003041E5 /* SwiftyBeaver */,
+			);
 			productName = "TimerLoop (iOS)";
 			productReference = 5AB364FC25732F5400AE5B4C /* TimerLoop.app */;
 			productType = "com.apple.product-type.application";
@@ -187,6 +202,9 @@
 			dependencies = (
 			);
 			name = "TimerLoop (macOS)";
+			packageProductDependencies = (
+				5A4B5C332575A49F00F165BD /* SwiftyBeaver */,
+			);
 			productName = "TimerLoop (macOS)";
 			productReference = 5AB3650425732F5400AE5B4C /* TimerLoop.app */;
 			productType = "com.apple.product-type.application";
@@ -217,6 +235,9 @@
 				Base,
 			);
 			mainGroup = 5AB364EC25732F5300AE5B4C;
+			packageReferences = (
+				5AB7DF862575A445003041E5 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
+			);
 			productRefGroup = 5AB364FD25732F5400AE5B4C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -519,6 +540,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5AB7DF862575A445003041E5 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5A4B5C332575A49F00F165BD /* SwiftyBeaver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5AB7DF862575A445003041E5 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
+			productName = SwiftyBeaver;
+		};
+		5AB7DF872575A445003041E5 /* SwiftyBeaver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5AB7DF862575A445003041E5 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
+			productName = SwiftyBeaver;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		5AB364F225732F5400AE5B4C /* TimerLoop.xcdatamodeld */ = {
