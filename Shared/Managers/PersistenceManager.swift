@@ -1,5 +1,5 @@
 //
-//  Persistence.swift
+//  PersistenceManager.swift
 //  Shared
 //
 //  Created by Lorenzo Lewis on 11/28/20.
@@ -7,11 +7,11 @@
 
 import CoreData
 
-struct PersistenceController {
-    static let shared = PersistenceController()
+struct PersistenceManager {
+    static let shared = PersistenceManager()
 
-    static var preview: PersistenceController = {
-        let result = PersistenceController(inMemory: true)
+    static var preview: PersistenceManager = {
+        let result = PersistenceManager(inMemory: true)
         let viewContext = result.container.viewContext
         for _ in 0..<10 {
             let newItem = CoreDataLoop(context: viewContext)

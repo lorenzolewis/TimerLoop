@@ -27,7 +27,7 @@ class LoopViewModel: Identifiable, ObservableObject {
     @Published var unsavedChanges = false
     
     static var previewLoop: LoopViewModel {
-        let context = PersistenceController.preview.container.viewContext
+        let context = PersistenceManager.preview.container.viewContext
         let coreDataLoop = CoreDataLoop(context: context)
         coreDataLoop.interval = 1
         return LoopViewModel(coreDataLoop)
