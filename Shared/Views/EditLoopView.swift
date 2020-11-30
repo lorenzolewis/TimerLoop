@@ -11,7 +11,7 @@ struct EditLoopView: View {
     
     @StateObject var loop: LoopViewModel
     @Environment(\.presentationMode) var presentationMode
-    
+        
     var body: some View {
         NavigationView {
             Form {
@@ -20,12 +20,26 @@ struct EditLoopView: View {
                 Stepper(loop.intervalString, value: $loop.interval, in: 0.25...12, step: 0.25)
             }
             .navigationTitle(loop.displayName)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                Button(action: {
-                    loop.save()
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Text("Save")
+                ToolbarItem(placement: .cancellationAction) {
+                    if loop.unsavedChanges {
+                        Button("Discard") {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    if loop.unsavedChanges {
+                        Button("Save") {
+                            loop.save()
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    } else {
+                        Button("Close") {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
                 }
             }
         }

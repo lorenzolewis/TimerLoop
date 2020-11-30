@@ -11,51 +11,43 @@ import CoreData
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \CoreDataLoop.id, ascending: true)],
-        animation: .default)
+    @FetchRequest(sortDescriptors: [], animation: .default)
     private var loops: FetchedResults<CoreDataLoop>
     
     @State private var selectedLoop: LoopViewModel?
     
     var body: some View {
         NavigationView {
-            List {
+            Form {
                 ForEach(loops) { loop in
-                    Button(action: {
-                        selectedLoop = LoopViewModel(loop)
-                    }) {
+                    ZStack(alignment: .leading) {
+                        Color.clear // Allows content shape to fill space
                         LoopListCellView(loop: LoopViewModel(loop))
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        selectedLoop = LoopViewModel(loop)
                     }
                 }
                 .onDelete(perform: deleteItems)
+                if loops.count == 0 {
+                    Button(action: {
+                        selectedLoop = LoopViewModel(context: viewContext)
+                    }, label: {
+                        Text("Create a new loop")
+                    })
+                }
             }
             .sheet(item: $selectedLoop) { loop in
                 EditLoopView(loop: loop)
             }
             .navigationTitle("TimerLoop")
             .toolbar {
-                ToolbarItem(placement: .automatic) {
-                    Button(action: addItem) {
-                        Label("Add Loop", systemImage: "plus")
-                    }
+                Button(action: {
+                    selectedLoop = LoopViewModel(context: viewContext)
+                }) {
+                    Label("Add Loop", systemImage: "plus")
                 }
-            }
-        }
-    }
-    
-    private func addItem() {
-        withAnimation {
-            let newItem = CoreDataLoop(context: viewContext)
-            newItem.id = UUID()
-            
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
     }

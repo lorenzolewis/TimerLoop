@@ -13,10 +13,18 @@ class LoopViewModel: Identifiable, ObservableObject {
     private var coreDataLoop: CoreDataLoop?
     private var context: NSManagedObjectContext
     
-    var id: UUID
-    var name: String
-    var isEnabled: Bool
-    @Published var interval: Double
+    let id: UUID
+    var name: String {
+        didSet { unsavedChanges = true }
+    }
+    var isEnabled: Bool {
+        didSet { unsavedChanges = true }
+    }
+    @Published var interval: Double {
+        didSet { unsavedChanges = true }
+    }
+    
+    @Published var unsavedChanges = false
     
     static var previewLoop: LoopViewModel {
         let context = PersistenceController.preview.container.viewContext
@@ -44,6 +52,8 @@ class LoopViewModel: Identifiable, ObservableObject {
         name = ""
         isEnabled = true
         interval = 1.0
+        
+        unsavedChanges = true
         
         self.context = context
     }
