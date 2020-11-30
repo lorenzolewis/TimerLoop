@@ -13,16 +13,18 @@ import CoreData
 
 struct NotificationManager {
     static let shared = NotificationManager()
+    let center = UNUserNotificationCenter.current()
     
     private struct NotificationData {
         let title: String
-        var time: Date
+        var components: DateComponents
         let threadIdentifier: String
     }
     
     func refreshNotifications() {
         guard let loops = fetchCoreDataLoops() else { return }
         let notifications = createNotificationData(from: loops)
+        checkNotificationAuthorization(with: notifications)
     }
     
     private func createNotificationData(from loops: [CoreDataLoop]) -> [NotificationData] {
@@ -35,7 +37,7 @@ struct NotificationManager {
                       var endTime = loop.endTime else { continue }
                 
                 // Set times to current date
-                let startTimeComponents = Calendar.current.dateComponents([.hour, .minute], from: startTime)
+                var startTimeComponents = Calendar.current.dateComponents([.hour, .minute], from: startTime)
                 startTime = Calendar.current.date(byAdding: startTimeComponents, to: Date())!
                 
                 let endTimeComponenets = Calendar.current.dateComponents([.hour, .minute], from: endTime)
@@ -45,16 +47,17 @@ struct NotificationManager {
                 if endTime < startTime {
                     endTime = Calendar.current.date(byAdding: .day, value: 1, to: endTime)!
                 }
-                
+                                
                 // Create notification to work with
                 var notification = NotificationData(
                     title: loop.name ?? "Your timer has looped!",
-                    time: startTime,
+                    components: startTimeComponents,
                     threadIdentifier: loop.id!.uuidString
                 )
                 
                 while startTime < endTime {
-                    notification.time = startTime
+                    startTimeComponents = Calendar.current.dateComponents([.hour, .minute], from: startTime)
+                    notification.components = startTimeComponents
                     notifications.append(notification)
                     
                     // Add the interval to the start time
@@ -64,6 +67,48 @@ struct NotificationManager {
         }
         
         return notifications
+    }
+    
+    private func checkNotificationAuthorization(with notifications: [NotificationData]) {
+        center.getNotificationSettings { settings in
+            switch settings.authorizationStatus {
+            case .notDetermined:
+                // Request authorization
+                center.requestAuthorization(options: [.alert]) { granted, error in
+                    if granted && error == nil {
+                        scheduleNotifications(with: notifications)
+                    } else {
+                        scheduleAlerts(with: notifications)
+                    }
+                }
+            case .authorized, .provisional, .ephemeral:
+                scheduleNotifications(with: notifications)
+            default:
+                scheduleAlerts(with: notifications)
+            }
+        }
+    }
+    
+    private func scheduleNotifications(with notifications: [NotificationData]) {
+        for notification in notifications {
+            let content = UNMutableNotificationContent()
+            content.title = notification.title
+            content.threadIdentifier = notification.threadIdentifier
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: notification.components, repeats: false)
+            
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+            
+            center.add(request) { error in
+                if let error = error {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    private func scheduleAlerts(with notifications: [NotificationData]) {
+        
     }
     
     private func fetchCoreDataLoops() -> [CoreDataLoop]? {
