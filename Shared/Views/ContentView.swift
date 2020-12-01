@@ -65,6 +65,7 @@ struct ContentView: View {
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
+        NotificationManager.shared.refreshNotifications()
     }
 }
 
