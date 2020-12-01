@@ -20,7 +20,7 @@ struct NotificationManager {
         var components: DateComponents
         let threadIdentifier: String
     }
-        
+    
     func refreshNotifications() {
         log.info("Attempting to refresh the notifications...")
         guard let loops = fetchCoreDataLoops() else {
@@ -29,7 +29,9 @@ struct NotificationManager {
         }
         let notifications = createNotificationData(from: loops)
         center.removeAllPendingNotificationRequests()
-        schedule(with: notifications)
+        if notifications.count > 0 {
+            schedule(with: notifications)
+        }
     }
     
     private func createNotificationData(from loops: [CoreDataLoop]) -> [NotificationData] {
@@ -52,7 +54,7 @@ struct NotificationManager {
                 if endTime < startTime {
                     endTime = Calendar.current.date(byAdding: .day, value: 1, to: endTime)!
                 }
-                                
+                
                 // Create notification to work with
                 var notification = NotificationData(
                     title: loop.name ?? "Your timer has looped!",
@@ -127,12 +129,12 @@ struct NotificationManager {
     private func scheduleAlerts(with notifications: [NotificationData]) {
         
         log.info("Scheduling alerts.")
-                
+        
         // Sort by dates, getting next one that will occur
         let notifications = notifications.sorted {
             Calendar.current.nextDate(after: Date(), matching: $0.components, matchingPolicy: .nextTime)! < Calendar.current.nextDate(after: Date(), matching: $1.components, matchingPolicy: .nextTime)!
         }
-                
+        
         guard let nextNotification = notifications.first else {
             log.error("No notifications to create an alert for")
             return
