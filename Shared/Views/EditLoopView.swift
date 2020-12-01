@@ -22,7 +22,7 @@ struct EditLoopView: View {
                 DatePicker("End Time", selection: $loop.endTime, displayedComponents: .hourAndMinute)
             }
             .navigationTitle(loop.displayName)
-            .navigationBarTitleDisplayMode(.inline)
+//            .navigationBarTitleDisplayMode(.inline) would love to have this but not supported in macOS
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     if loop.unsavedChanges {
