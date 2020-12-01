@@ -10,4 +10,4 @@ I created this app originally to help me with anxiety. Instead of constantly thi
 
 You can set multiple timers, each with their own intervals and start and end times.
 
-![TimerLoop app video demo](Assets/demo.mp4)
+![TimerLoop app video demo](Assets/demo.gif)
