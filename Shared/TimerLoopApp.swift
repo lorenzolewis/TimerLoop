@@ -11,7 +11,10 @@ let log = LoggingManager.shared.log
 
 @main
 struct TimerLoopApp: App {
+    
+    #if os(iOS)
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    #endif
     @ObservedObject private var alertManager = AlertManager.shared
     
     let persistenceController = PersistenceManager.shared

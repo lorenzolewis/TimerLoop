@@ -21,7 +21,6 @@
 		5AA43D732575555D0037BAD4 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA43D722575555D0037BAD4 /* AlertManager.swift */; };
 		5AA43D742575555D0037BAD4 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA43D722575555D0037BAD4 /* AlertManager.swift */; };
 		5AA43D78257597C60037BAD4 /* TimerLoopAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA43D77257597C60037BAD4 /* TimerLoopAppDelegate.swift */; };
-		5AA43D79257597C60037BAD4 /* TimerLoopAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA43D77257597C60037BAD4 /* TimerLoopAppDelegate.swift */; };
 		5AB3650825732F5400AE5B4C /* TimerLoop.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5AB364F225732F5400AE5B4C /* TimerLoop.xcdatamodeld */; };
 		5AB3650925732F5400AE5B4C /* TimerLoop.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5AB364F225732F5400AE5B4C /* TimerLoop.xcdatamodeld */; };
 		5AB3650A25732F5400AE5B4C /* TimerLoopApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB364F425732F5400AE5B4C /* TimerLoopApp.swift */; };
@@ -138,7 +137,6 @@
 				5A45C644257401FA0015F343 /* View Models */,
 				5A8778EB2573FAE300BA227A /* Views */,
 				5AB364F425732F5400AE5B4C /* TimerLoopApp.swift */,
-				5AA43D77257597C60037BAD4 /* TimerLoopAppDelegate.swift */,
 				5AB364F725732F5400AE5B4C /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -156,6 +154,7 @@
 		5AB364FE25732F5400AE5B4C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				5AA43D77257597C60037BAD4 /* TimerLoopAppDelegate.swift */,
 				5AB364FF25732F5400AE5B4C /* Info.plist */,
 			);
 			path = iOS;
@@ -294,7 +293,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5AA43D79257597C60037BAD4 /* TimerLoopAppDelegate.swift in Sources */,
 				5AB3650925732F5400AE5B4C /* TimerLoop.xcdatamodeld in Sources */,
 				5AB3650F25732F5400AE5B4C /* PersistenceManager.swift in Sources */,
 				5A1C31B525733D7C00B7272C /* LoopViewModel.swift in Sources */,
