@@ -22,7 +22,11 @@ struct NotificationManager {
     }
         
     func refreshNotifications() {
-        guard let loops = fetchCoreDataLoops() else { return }
+        log.info("Attempting to refresh the notifications...")
+        guard let loops = fetchCoreDataLoops() else {
+            log.error("Problem fetching loops from core data")
+            return
+        }
         let notifications = createNotificationData(from: loops)
         schedule(with: notifications)
     }
@@ -64,7 +68,7 @@ struct NotificationManager {
                 }
             }
         }
-        
+        log.info("Created \(notifications.count) notification data to try to schedule")
         return notifications
     }
     
@@ -73,22 +77,31 @@ struct NotificationManager {
             switch settings.authorizationStatus {
             case .notDetermined:
                 // Request authorization
+                log.info("Requesting notification authorization...")
                 center.requestAuthorization(options: [.alert]) { granted, error in
                     if granted && error == nil {
+                        log.info("Granted.")
                         scheduleNotifications(with: notifications)
                     } else {
+                        log.info("Not granted: \(granted) \(String(describing: error))")
                         scheduleAlerts(with: notifications)
                     }
                 }
             case .authorized, .provisional, .ephemeral:
+                log.info("Notifications are allowed.")
                 scheduleNotifications(with: notifications)
+            case .denied:
+                log.info("Notifications are denied.")
+                scheduleAlerts(with: notifications)
             default:
+                log.error("An issue occured while checking for notification authorization status: \(settings.authorizationStatus)")
                 scheduleAlerts(with: notifications)
             }
         }
     }
     
     private func scheduleNotifications(with notifications: [NotificationData]) {
+        log.info("Attempting to schedule \(notifications.count) notification(s)...")
         for notification in notifications {
             let content = UNMutableNotificationContent()
             content.title = notification.title
@@ -101,13 +114,16 @@ struct NotificationManager {
             
             center.add(request) { error in
                 if let error = error {
-                    print(error)
+                    log.error("Issue adding notification request to UserNotificationCenter: \(error)")
                 }
             }
         }
+        log.info("Complete.")
     }
     
     private func scheduleAlerts(with notifications: [NotificationData]) {
+        
+        log.info("Scheduling alerts.")
         
         // Filter out any dates that have passed
         var notifications = notifications.filter { $0.date > Date() }
@@ -115,14 +131,20 @@ struct NotificationManager {
         // Sort by dates, getting next one that will occur
         notifications.sort { $0.date > $1.date }
         
-        guard let nextNotification = notifications.first else { return }
+        guard let nextNotification = notifications.first else {
+            log.error("No notifications to create an alert for")
+            return
+        }
         
         let timer = Timer(fire: nextNotification.date, interval: 0, repeats: false) { _ in
+            log.info("Firing in-app timer for alert notification")
+            
             let alert = Alert(title: Text(nextNotification.title), message: nil, dismissButton: .default(Text("Dismiss")))
             AlertManager.shared.enqueue(alert)
             
             refreshNotifications()
         }
+        
         RunLoop.current.add(timer, forMode: .common)
     }
     

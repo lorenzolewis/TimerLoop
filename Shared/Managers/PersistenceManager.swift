@@ -14,14 +14,15 @@ struct PersistenceManager {
         let result = PersistenceManager(inMemory: true)
         let viewContext = result.container.viewContext
         for _ in 0..<10 {
-            let newItem = CoreDataLoop(context: viewContext)
-            newItem.id = UUID()
+            let newLoop = CoreDataLoop(context: viewContext)
+            newLoop.id = UUID()
         }
         do {
             try viewContext.save()
         } catch {
             // Replace this implementation with code to handle the error appropriately.
             // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            log.error("An issue occured while attempting to save the preview loops: \(error)")
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
@@ -37,17 +38,7 @@ struct PersistenceManager {
         }
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-
-                /*
-                Typical reasons for an error here include:
-                * The parent directory does not exist, cannot be created, or disallows writing.
-                * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                * The device is out of space.
-                * The store could not be migrated to the current model version.
-                Check the error message to determine what the actual problem was.
-                */
+                log.error("Something really bad happened when trying to load the CoreData persistent store: \(error)")
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })

@@ -7,12 +7,14 @@
 
 import SwiftUI
 
+let log = LoggingManager.shared.log
+
 @main
 struct TimerLoopApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @ObservedObject private var alertManager = AlertManager.shared
     
     let persistenceController = PersistenceManager.shared
-    @ObservedObject private var alertManager = AlertManager.shared
     
     var body: some Scene {
         WindowGroup {

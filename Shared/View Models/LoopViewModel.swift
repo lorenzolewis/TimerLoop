@@ -51,6 +51,8 @@ class LoopViewModel: Identifiable, ObservableObject {
         
         self.coreDataLoop = coreDataLoop
         context = coreDataLoop.managedObjectContext!
+        
+        log.verbose("Creating new LoopViewModel from exisitng loop")
     }
     
     /// Instantiate for a draft LoopViewModel
@@ -66,6 +68,8 @@ class LoopViewModel: Identifiable, ObservableObject {
         unsavedChanges = true
         
         self.context = context
+        
+        log.verbose("Creating new LoopViewModel draft")
     }
     
     // MARK: Functions
@@ -83,8 +87,14 @@ class LoopViewModel: Identifiable, ObservableObject {
         coreDataLoop?.startTime = startTime
         coreDataLoop?.endTime = endTime
         
-        try? context.save()
-        NotificationManager.shared.refreshNotifications()
+        do {
+            log.verbose("Attempting to save loop back to CoreData...")
+            try context.save()
+            log.verbose("Saved")
+            NotificationManager.shared.refreshNotifications()
+        } catch {
+            log.error("Not able to save loop back to CoreData: \(error)")
+        }
     }
     
     // MARK: Calculated Values
