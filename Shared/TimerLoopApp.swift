@@ -12,12 +12,22 @@ let log = LoggingManager.shared.log
 @main
 struct TimerLoopApp: App {
     
+    init() {
+        alertManager = AlertManager.shared
+        persistenceController = PersistenceManager.shared
+        
+        DispatchQueue.global().async {
+            VersionManager()
+            NotificationManager.shared.refreshNotifications()
+        }
+    }
+    
     #if os(iOS)
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     #endif
-    @ObservedObject private var alertManager = AlertManager.shared
     
-    let persistenceController = PersistenceManager.shared
+    @ObservedObject private var alertManager: AlertManager
+    let persistenceController: PersistenceManager
     
     var body: some Scene {
         WindowGroup {
